@@ -1,0 +1,89 @@
+═══════════════════════════════════════════════════════
+  SIMPLE GUIDE - Get Public URL in 5 Minutes
+═══════════════════════════════════════════════════════
+
+OPTION 1: Use the Automated Script (EASIEST!)
+───────────────────────────────────────────────────────
+
+1. Double-click: EASY-SETUP.bat
+2. Follow the on-screen instructions
+3. Done! You'll get your public URL
+
+───────────────────────────────────────────────────────
+
+OPTION 2: Manual Setup (Step by Step)
+───────────────────────────────────────────────────────
+
+STEP 1: Download ngrok
+───────────────────────────────────────────────────────
+1. Go to: https://ngrok.com/download
+2. Click "Download for Windows"
+3. Extract the ZIP file
+4. Copy "ngrok.exe" to your project folder
+   (Same folder where server.js is located)
+
+STEP 2: Sign Up (Free Account)
+───────────────────────────────────────────────────────
+1. Go to: https://dashboard.ngrok.com/signup
+2. Sign up with your email (it's FREE!)
+3. After signing up, you'll see your "authtoken"
+4. Copy that token (looks like: 2abc123xyz...)
+
+STEP 3: Configure ngrok
+───────────────────────────────────────────────────────
+1. Open PowerShell or Command Prompt in your project folder
+2. Run this command (replace YOUR_TOKEN with your actual token):
+   
+   ngrok config add-authtoken YOUR_TOKEN
+
+   Example:
+   ngrok config add-authtoken 2abc123xyz456def789
+
+STEP 4: Start Everything
+───────────────────────────────────────────────────────
+Method A: Use the script
+- Double-click: start-ngrok.bat
+
+Method B: Manual
+- Terminal 1: npm start
+- Terminal 2: ngrok http 3000
+
+STEP 5: Get Your Public URL
+───────────────────────────────────────────────────────
+ngrok will show something like:
+
+   Forwarding  https://abc123-xyz.ngrok-free.app -> http://localhost:3000
+
+Copy this URL: https://abc123-xyz.ngrok-free.app
+
+STEP 6: Use on Your Phone
+───────────────────────────────────────────────────────
+1. Open your phone's browser
+2. Type the ngrok URL
+3. ✅ Works from anywhere! (WiFi, mobile data, etc.)
+
+═══════════════════════════════════════════════════════
+  TROUBLESHOOTING
+═══════════════════════════════════════════════════════
+
+Problem: "ngrok not found"
+Solution: Make sure ngrok.exe is in your project folder
+
+Problem: "authtoken required"
+Solution: Sign up and run: ngrok config add-authtoken YOUR_TOKEN
+
+Problem: URL not working
+Solution: Make sure both npm start AND ngrok are running
+
+═══════════════════════════════════════════════════════
+  QUICK SUMMARY
+═══════════════════════════════════════════════════════
+
+1. Download ngrok → Extract to project folder
+2. Sign up at ngrok.com → Get authtoken
+3. Run: ngrok config add-authtoken YOUR_TOKEN
+4. Run: start-ngrok.bat (or npm start + ngrok http 3000)
+5. Copy the URL shown
+6. Use on your phone - works from anywhere!
+
+═══════════════════════════════════════════════════════

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Job Posting - Job Scam Detection & Reporting System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">ScamGuard</h1>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="scan.html" class="active">Scan Job</a></li>
+                <li><a href="report.html">Report Scam</a></li>
+                <li><a href="admin-login.html">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="form-section">
+            <div class="container">
+                <h2 class="page-title">Scan Job Posting</h2>
+                <p class="page-subtitle">Enter the job details below to analyze the posting for potential scams.</p>
+
+                <form id="scanForm" class="form">
+                    <div class="form-group">
+                        <label for="jobTitle" class="form-label">
+                            Job Title
+                            <span class="tooltip-icon" data-tooltip="Enter the exact job title as listed in the posting (e.g., 'Software Engineer', 'Data Entry Clerk')">ℹ️</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="jobTitle" 
+                            name="jobTitle" 
+                            class="form-input" 
+                            placeholder="e.g., Software Engineer"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="companyName" class="form-label">
+                            Company Name
+                            <span class="tooltip-icon" data-tooltip="Enter the name of the company offering the position. Verify this matches their official website.">ℹ️</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="companyName" 
+                            name="companyName" 
+                            class="form-input" 
+                            placeholder="e.g., Tech Solutions Inc."
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactEmail" class="form-label">
+                            Contact Email
+                            <span class="tooltip-icon" data-tooltip="Enter the email address provided in the job posting. Be cautious of free email services (Gmail, Yahoo) from companies.">ℹ️</span>
+                        </label>
+                        <input 
+                            type="email" 
+                            id="contactEmail" 
+                            name="contactEmail" 
+                            class="form-input" 
+                            placeholder="contact@company.com"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="salaryOffered" class="form-label">
+                            Salary Offered
+                            <span class="tooltip-icon" data-tooltip="Enter the salary or compensation mentioned. Unusually high salaries for entry-level positions can be a red flag.">ℹ️</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="salaryOffered" 
+                            name="salaryOffered" 
+                            class="form-input" 
+                            placeholder="e.g., $50,000/year or $25/hour"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="jobDescription" class="form-label">
+                            Job Description
+                            <span class="tooltip-icon" data-tooltip="Paste the full job description here. Look for vague descriptions, poor grammar, or requests for upfront payments.">ℹ️</span>
+                        </label>
+                        <textarea 
+                            id="jobDescription" 
+                            name="jobDescription" 
+                            class="form-textarea" 
+                            rows="6"
+                            placeholder="Paste the complete job description here..."
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentRequired" class="form-label">
+                            Payment Required
+                            <span class="tooltip-icon" data-tooltip="Select 'Yes' if the job posting requires any upfront payment, fees, or purchases. Legitimate employers never require payment from employees.">ℹ️</span>
+                        </label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="paymentRequired" value="yes" required>
+                                <span>Yes</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="paymentRequired" value="no" required>
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large">Analyze Job Posting</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Job Scam Detection & Reporting System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="cursor.js"></script>
+    <script src="scan.js"></script>
+</body>
+</html>

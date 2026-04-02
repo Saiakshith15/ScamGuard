@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report a Scam - Job Scam Detection & Reporting System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">ScamGuard</h1>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="scan.html">Scan Job</a></li>
+                <li><a href="report.html" class="active">Report Scam</a></li>
+                <li><a href="admin-login.html">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="form-section">
+            <div class="container">
+                <h2 class="page-title">Report a Scam</h2>
+                <p class="page-subtitle">Help protect others by reporting suspicious job postings you've encountered.</p>
+
+                <div id="successMessage" class="success-message" style="display: none;">
+                    <div class="success-icon">✓</div>
+                    <h3>Report Submitted Successfully!</h3>
+                    <p>Thank you for helping protect others. Your report has been received and will be reviewed.</p>
+                    <a href="index.html" class="btn btn-primary">Return to Home</a>
+                </div>
+
+                <form id="reportForm" class="form">
+                    <div class="form-group">
+                        <label for="reporterName" class="form-label">Name</label>
+                        <input 
+                            type="text" 
+                            id="reporterName" 
+                            name="reporterName" 
+                            class="form-input" 
+                            placeholder="Your full name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reporterEmail" class="form-label">Email</label>
+                        <input 
+                            type="email" 
+                            id="reporterEmail" 
+                            name="reporterEmail" 
+                            class="form-input" 
+                            placeholder="your.email@example.com"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scamDescription" class="form-label">Scam Description</label>
+                        <textarea 
+                            id="scamDescription" 
+                            name="scamDescription" 
+                            class="form-textarea" 
+                            rows="8"
+                            placeholder="Please provide details about the scam: company name, job title, contact information, what happened, and any other relevant information..."
+                            required
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large">Submit Report</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Job Scam Detection & Reporting System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="cursor.js"></script>
+    <script src="report.js"></script>
+</body>
+</html>

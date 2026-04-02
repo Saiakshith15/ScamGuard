@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScamGuard — System Architecture Flowcharts</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 60px 40px;
+            text-align: center;
+            border-bottom: 3px solid #4361ee;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4361ee, #7c3aed, #2ec4b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #a0a0b8;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: #c0c0d0;
+        }
+
+        .legend-shape {
+            width: 36px;
+            height: 24px;
+            border: 2px solid;
+        }
+
+        .shape-rect { border-color: #4361ee; background: #4361ee; border-radius: 4px; }
+        .shape-diamond { border-color: #fdcb6e; background: #ffeaa7; transform: rotate(45deg); width: 20px; height: 20px; }
+        .shape-cylinder { border-color: #9b5de5; background: #9b5de5; border-radius: 50% / 30%; }
+        .shape-parallel { border-color: #2ec4b6; background: #38d9a9; transform: skewX(-15deg); }
+        .shape-rounded { border-color: #4361ee; background: #4361ee; border-radius: 12px; }
+        .shape-start { border-color: #2ecc71; background: #2ecc71; border-radius: 50%; width: 24px; height: 24px; }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 30px 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 12px 24px;
+            border: 2px solid #4361ee;
+            border-radius: 10px;
+            background: transparent;
+            color: #4361ee;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background: #4361ee;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
+        }
+
+        .diagram-container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .diagram-section {
+            display: none;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 40px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .diagram-section.active {
+            display: block;
+        }
+
+        .diagram-section h2 {
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .diagram-section .subtitle {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #6c757d;
+            margin-bottom: 30px;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+        }
+
+        .print-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #4361ee, #7c3aed);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.5);
+        }
+
+        @media print {
+            body { background: #fff; }
+            .hero, .nav-tabs, .print-btn { display: none; }
+            .diagram-section { display: block !important; box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <h1>ScamGuard — System Architecture</h1>
+        <p>Complete system architecture flowcharts with proper flowchart shapes — rectangles, diamonds, cylinders, and parallelograms — all filled with colors.</p>
+        <div class="legend">
+            <div class="legend-item"><div class="legend-shape shape-rounded"></div> Start / End</div>
+            <div class="legend-item"><div class="legend-shape shape-rect"></div> Process</div>
+            <div class="legend-item"><div class="legend-shape shape-diamond"></div> Decision</div>
+            <div class="legend-item"><div class="legend-shape shape-parallel"></div> Input / Output</div>
+            <div class="legend-item"><div class="legend-shape shape-cylinder"></div> Database</div>
+        </div>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showTab('tab1')">Complete Flow</button>
+        <button class="nav-tab" onclick="showTab('tab2')">Risk Analysis</button>
+        <button class="nav-tab" onclick="showTab('tab3')">Report Flow</button>
+        <button class="nav-tab" onclick="showTab('tab4')">Admin Flow</button>
+        <button class="nav-tab" onclick="showTab('tab5')">Layered Architecture</button>
+    </div>
+
+    <div class="diagram-container">
+
+        <!-- TAB 1: Complete System Flow -->
+        <div class="diagram-section active" id="tab1">
+            <h2>Complete System Architecture Flow</h2>
+            <p class="subtitle">End-to-end user journey through the ScamGuard application</p>
+            <div class="mermaid">
+flowchart TD
+    START(["🌐 User Opens ScamGuard Website"])
+    HOME["🏠 HOME PAGE — index.html\nWelcome Screen with Navigation"]
+    DECIDE{"🤔 What does the\nuser want to do?"}
+
+    SCAN_PAGE["🔍 SCAN PAGE — scan.html\nJob Details Input Form"]
+    SCAN_INPUT[/"📥 User Enters: Job Title,\nCompany, Email, Salary,\nDescription, Payment Required?"/]
+    SCAN_SUBMIT["📤 Submit Form — POST /api/scan"]
+    SERVER_SCAN["⚙️ Express Server\nReceives Job Data"]
+    RISK_ENGINE["🧠 Risk Analysis Engine\nRule-Based Detection"]
+    DB_SAVE_SCAN[("💾 Save to\njob_scans")]
+    RISK_DECIDE{"📊 Risk Score\nLevel?"}
+    HIGH["🔴 HIGH RISK\nScore ≥ 40\nLikely a Scam"]
+    MED["🟡 MEDIUM RISK\nScore 20–39\nProceed with Caution"]
+    LOW["🟢 LOW RISK\nScore < 20\nAppears Legitimate"]
+    RESULT["📊 RESULT PAGE — result.html\nDisplay Risk Level"]
+    AFTER{"👤 User's\nNext Action?"}
+
+    REPORT_PAGE["📝 REPORT PAGE — report.html\nScam Report Form"]
+    REPORT_INPUT[/"📥 User Enters:\nName, Email,\nScam Description"/]
+    REPORT_SUBMIT["📤 Submit Report\nPOST /api/report"]
+    SERVER_REPORT["⚙️ Express Server\nReceives Report"]
+    DB_SAVE_REPORT[("💾 Save to\nscam_reports\nStatus: Pending")]
+    REPORT_OK["✅ Report Submitted\nSuccessfully"]
+
+    ADMIN_LOGIN["🔐 ADMIN LOGIN\nadmin-login.html"]
+    ADMIN_INPUT[/"📥 Admin Enters:\nUsername, Password"/]
+    AUTH_SUBMIT["📤 Submit Login\nPOST /api/admin/login"]
+    AUTH_CHECK{"🔒 Credentials\nValid?"}
+    AUTH_FAIL["❌ Login Failed\nShow Error"]
+    ADMIN_DASH["📋 ADMIN DASHBOARD\nadmin.html"]
+    FETCH["⚙️ Fetch All Data\nGET /api/scans & /api/reports"]
+    DB_READ[("💾 Read\nAll Records")]
+    ADMIN_VIEW["📋 Display:\nAll Scans, Reports\n& Statistics"]
+
+    DONE(["🔚 Session Complete"])
+
+    START --> HOME --> DECIDE
+
+    DECIDE -- "Check a Job" --> SCAN_PAGE
+    DECIDE -- "Report a Scam" --> REPORT_PAGE
+    DECIDE -- "Admin Login" --> ADMIN_LOGIN
+
+    SCAN_PAGE --> SCAN_INPUT --> SCAN_SUBMIT --> SERVER_SCAN --> RISK_ENGINE
+    RISK_ENGINE --> DB_SAVE_SCAN --> RISK_DECIDE
+
+    RISK_DECIDE -- "≥ 40" --> HIGH
+    RISK_DECIDE -- "20–39" --> MED
+    RISK_DECIDE -- "< 20" --> LOW
+
+    HIGH --> RESULT
+    MED --> RESULT
+    LOW --> RESULT
+    RESULT --> AFTER
+
+    AFTER -- "Scan Another" --> SCAN_PAGE
+    AFTER -- "Report Job" --> REPORT_PAGE
+    AFTER -- "Done" --> DONE
+
+    REPORT_PAGE --> REPORT_INPUT --> REPORT_SUBMIT --> SERVER_REPORT --> DB_SAVE_REPORT --> REPORT_OK --> DONE
+
+    ADMIN_LOGIN --> ADMIN_INPUT --> AUTH_SUBMIT --> AUTH_CHECK
+    AUTH_CHECK -- "No" --> AUTH_FAIL --> ADMIN_LOGIN
+    AUTH_CHECK -- "Yes" --> ADMIN_DASH --> FETCH --> DB_READ --> ADMIN_VIEW --> DONE
+
+    style START fill:#4361ee,stroke:#3250d3,color:#fff,stroke-width:2px
+    style HOME fill:#4361ee,stroke:#3250d3,color:#fff,stroke-width:2px
+    style DECIDE fill:#ffeaa7,stroke:#fdcb6e,color:#2d3436,stroke-width:2px
+    style SCAN_PAGE fill:#2ec4b6,stroke:#1ea898,color:#fff,stroke-width:2px
+    style SCAN_INPUT fill:#38d9a9,stroke:#20c997,color:#1a1a2e,stroke-width:2px
+    style SCAN_SUBMIT fill:#2ec4b6,stroke:#1ea898,color:#fff,stroke-width:2px
+    style SERVER_SCAN fill:#6c757d,stroke:#545b62,color:#fff,stroke-width:2px
+    style RISK_ENGINE fill:#ff9f43,stroke:#ee5a24,color:#fff,stroke-width:2px
+    style DB_SAVE_SCAN fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style RISK_DECIDE fill:#ffeaa7,stroke:#fdcb6e,color:#2d3436,stroke-width:2px
+    style HIGH fill:#e74c3c,stroke:#c0392b,color:#fff,stroke-width:2px
+    style MED fill:#f39c12,stroke:#d68910,color:#fff,stroke-width:2px
+    style LOW fill:#2ecc71,stroke:#27ae60,color:#fff,stroke-width:2px
+    style RESULT fill:#ff9f43,stroke:#ee5a24,color:#fff,stroke-width:2px
+    style AFTER fill:#ffeaa7,stroke:#fdcb6e,color:#2d3436,stroke-width:2px
+    style REPORT_PAGE fill:#e74c3c,stroke:#c0392b,color:#fff,stroke-width:2px
+    style REPORT_INPUT fill:#ff6b6b,stroke:#ee5a52,color:#fff,stroke-width:2px
+    style REPORT_SUBMIT fill:#e74c3c,stroke:#c0392b,color:#fff,stroke-width:2px
+    style SERVER_REPORT fill:#6c757d,stroke:#545b62,color:#fff,stroke-width:2px
+    style DB_SAVE_REPORT fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style REPORT_OK fill:#2ecc71,stroke:#27ae60,color:#fff,stroke-width:2px
+    style ADMIN_LOGIN fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style ADMIN_INPUT fill:#c084fc,stroke:#a855f7,color:#1a1a2e,stroke-width:2px
+    style AUTH_SUBMIT fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style AUTH_CHECK fill:#ffeaa7,stroke:#fdcb6e,color:#2d3436,stroke-width:2px
+    style AUTH_FAIL fill:#e74c3c,stroke:#c0392b,color:#fff,stroke-width:2px
+    style ADMIN_DASH fill:#2ecc71,stroke:#27ae60,color:#fff,stroke-width:2px
+    style FETCH fill:#6c757d,stroke:#545b62,color:#fff,stroke-width:2px
+    style DB_READ fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style ADMIN_VIEW fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style DONE fill:#4361ee,stroke:#3250d3,color:#fff,stroke-width:2px
+            </div>
+        </div>
+
+        <!-- TAB 2: Risk Analysis Flow -->
+        <div class="diagram-section" id="tab2">
+            <h2>Risk Analysis Engine Flow</h2>
+            <p class="subtitle">How the system analyzes job postings and calculates risk scores</p>
+            <div class="mermaid">
+flowchart TD
+    START(["🧑‍💼 Job Seeker Submits Job Posting"])
+    INPUT["📥 Job Data Received:\nTitle, Company, Email,\nSalary, Description"]
+    ENGINE["🧠 RISK ANALYSIS ENGINE\nStarts Processing"]
+
+    CHECK1{"💰 Does the job\nrequire PAYMENT\nfrom applicant?"}
+    SCORE1["🚩 +50 Points\nMajor Red Flag!"]
+
+    CHECK2{"📧 Is the contact\nemail from a FREE\nprovider?\ngmail, yahoo, hotmail"}
+    SCORE2["⚠️ +20 Points\nUnprofessional Email"]
+
+    CHECK3{"🔑 Does description\ncontain SUSPICIOUS\nKEYWORDS?\neasy money, guaranteed\nno experience needed"}
+    SCORE3["⚠️ +5 Points Each\nCommon Scam Phrases"]
+
+    CHECK4{"💵 Is the salary\nUNREALISTICALLY HIGH?\n> $100K for\nentry-level?"}
+    SCORE4["⚠️ +15 Points\nToo Good To Be True"]
+
+    CALC["📊 CALCULATE\nTOTAL RISK SCORE"]
+    DB[("💾 DATABASE\nSave Scan Record\nto scamguard.json")]
+    FINAL{"📊 What is the\nFinal Risk Score?"}
+
+    HIGH["🔴 HIGH RISK — Score ≥ 40\nThis job is likely a SCAM!\nUser is WARNED not to proceed"]
+    MED["🟡 MEDIUM RISK — Score 20–39\nThis job is suspicious\nProceed with CAUTION"]
+    LOW["🟢 LOW RISK — Score < 20\nThis job appears safe\nUser can proceed"]
+
+    DISPLAY["📊 Display Result\non result.html"]
+    PROTECTED(["🛡️ User is Protected\nfrom Potential Fraud"])
+
+    START --> INPUT --> ENGINE --> CHECK1
+    CHECK1 -- "Yes" --> SCORE1 --> CHECK2
+    CHECK1 -- "No (+0)" --> CHECK2
+    CHECK2 -- "Yes" --> SCORE2 --> CHECK3
+    CHECK2 -- "No (+0)" --> CHECK3
+    CHECK3 -- "Found" --> SCORE3 --> CHECK4
+    CHECK3 -- "None (+0)" --> CHECK4
+    CHECK4 -- "Yes" --> SCORE4 --> CALC
+    CHECK4 -- "No (+0)" --> CALC
+    CALC --> DB --> FINAL
+
+    FINAL -- "Score ≥ 40" --> HIGH
+    FINAL -- "Score 20–39" --> MED
+    FINAL -- "Score < 20" --> LOW
+
+    HIGH --> DISPLAY
+    MED --> DISPLAY
+    LOW --> DISPLAY
+    DISPLAY --> PROTECTED
+
+    style START fill:#4361ee,stroke:#3250d3,color:#fff,stroke-width:2px
+    style INPUT fill:#4361ee,stroke:#3250d3,color:#fff,stroke-width:2px
+    style ENGINE fill:#ff9f43,stroke:#ee5a24,color:#fff,stroke-width:2px
+    style CHECK1 fill:#ffeaa7,stroke:#fdcb6e,color:#2d3436,stroke-width:2px
+    style CHECK2 fill:#ffeaa7,stroke:#fdcb6e,color:#2d3436,stroke-width:2px
+    style CHECK3 fill:#ffeaa7,stroke:#fdcb6e,color:#2d3436,stroke-width:2px
+    style CHECK4 fill:#ffeaa7,stroke:#fdcb6e,color:#2d3436,stroke-width:2px
+    style SCORE1 fill:#e74c3c,stroke:#c0392b,color:#fff,stroke-width:2px
+    style SCORE2 fill:#ff9f43,stroke:#ee5a24,color:#fff,stroke-width:2px
+    style SCORE3 fill:#ff9f43,stroke:#ee5a24,color:#fff,stroke-width:2px
+    style SCORE4 fill:#ff9f43,stroke:#ee5a24,color:#fff,stroke-width:2px
+    style CALC fill:#ff9f43,stroke:#ee5a24,color:#fff,stroke-width:2px
+    style DB fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style FINAL fill:#ffeaa7,stroke:#fdcb6e,color:#2d3436,stroke-width:2px
+    style HIGH fill:#e74c3c,stroke:#c0392b,color:#fff,stroke-width:2px
+    style MED fill:#f39c12,stroke:#d68910,color:#fff,stroke-width:2px
+    style LOW fill:#2ecc71,stroke:#27ae60,color:#fff,stroke-width:2px
+    style DISPLAY fill:#ff9f43,stroke:#ee5a24,color:#fff,stroke-width:2px
+    style PROTECTED fill:#4361ee,stroke:#3250d3,color:#fff,stroke-width:2px
+            </div>
+        </div>
+
+        <!-- TAB 3: Report Flow -->
+        <div class="diagram-section" id="tab3">
+            <h2>Scam Report Flow</h2>
+            <p class="subtitle">How a user reports a fraudulent job posting</p>
+            <div class="mermaid">
+flowchart TD
+    START(["🧑‍🏫 Scam Reporter\nOpens ScamGuard"])
+    HOME["🏠 HOME PAGE\nindex.html"]
+    CLICK["👤 User Clicks\n'Report a Scam' Button"]
+    REPORT["📝 REPORT PAGE\nreport.html\nScam Report Form"]
+    INPUT[/"📥 User Enters:\n• Reporter Name\n• Reporter Email\n• Scam Description"/]
+    VALIDATE{"✅ All Fields\nFilled In?"}
+    ERROR["❌ Show Error\nPlease fill all fields"]
+    SUBMIT["📤 Submit Report\nPOST /api/report\nSend JSON Data"]
+    SERVER["⚙️ EXPRESS SERVER\nReceives Report Data"]
+    PROCESS["⚙️ Server Processes:\n• Validates data\n• Adds timestamp\n• Sets status: pending"]
+    DB[("💾 DATABASE\nSave to scam_reports[]\nin scamguard.json")]
+    RESPONSE["📤 Server Returns\nSuccess Response"]
+    CONFIRM["✅ CONFIRMATION\n'Report Submitted Successfully!'\nStatus: Pending Review"]
+    NEXT{"👤 What does the\nuser do next?"}
+    SCAN["🔍 Go to Scan Page"]
+    HOME2["🏠 Go Back Home"]
+    DONE(["🔚 Session Complete"])
+
+    START --> HOME --> CLICK --> REPORT --> INPUT --> VALIDATE
+    VALIDATE -- "No" --> ERROR --> INPUT
+    VALIDATE -- "Yes" --> SUBMIT --> SERVER --> PROCESS --> DB --> RESPONSE --> CONFIRM --> NEXT
+    NEXT -- "Scan a Job" --> SCAN
+    NEXT -- "Go Home" --> HOME2
+    NEXT -- "Done" --> DONE
+
+    style START fill:#e74c3c,stroke:#c0392b,color:#fff,stroke-width:2px
+    style HOME fill:#4361ee,stroke:#3250d3,color:#fff,stroke-width:2px
+    style CLICK fill:#e74c3c,stroke:#c0392b,color:#fff,stroke-width:2px
+    style REPORT fill:#e74c3c,stroke:#c0392b,color:#fff,stroke-width:2px
+    style INPUT fill:#ff6b6b,stroke:#ee5a52,color:#fff,stroke-width:2px
+    style VALIDATE fill:#ffeaa7,stroke:#fdcb6e,color:#2d3436,stroke-width:2px
+    style ERROR fill:#e74c3c,stroke:#c0392b,color:#fff,stroke-width:2px
+    style SUBMIT fill:#e74c3c,stroke:#c0392b,color:#fff,stroke-width:2px
+    style SERVER fill:#6c757d,stroke:#545b62,color:#fff,stroke-width:2px
+    style PROCESS fill:#6c757d,stroke:#545b62,color:#fff,stroke-width:2px
+    style DB fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style RESPONSE fill:#6c757d,stroke:#545b62,color:#fff,stroke-width:2px
+    style CONFIRM fill:#2ecc71,stroke:#27ae60,color:#fff,stroke-width:2px
+    style NEXT fill:#ffeaa7,stroke:#fdcb6e,color:#2d3436,stroke-width:2px
+    style SCAN fill:#2ec4b6,stroke:#1ea898,color:#fff,stroke-width:2px
+    style HOME2 fill:#4361ee,stroke:#3250d3,color:#fff,stroke-width:2px
+    style DONE fill:#4361ee,stroke:#3250d3,color:#fff,stroke-width:2px
+            </div>
+        </div>
+
+        <!-- TAB 4: Admin Flow -->
+        <div class="diagram-section" id="tab4">
+            <h2>Admin Authentication & Dashboard Flow</h2>
+            <p class="subtitle">How an administrator logs in and reviews system data</p>
+            <div class="mermaid">
+flowchart TD
+    START(["🛡️ Administrator\nOpens ScamGuard"])
+    HOME["🏠 HOME PAGE\nindex.html"]
+    CLICK["👤 Admin Clicks\n'Admin Login' Button"]
+    LOGIN["🔐 ADMIN LOGIN PAGE\nadmin-login.html\nCredentials Form"]
+    INPUT[/"📥 Admin Enters:\n• Username\n• Password"/]
+    SUBMIT["📤 Submit Login\nPOST /api/admin/login"]
+    SERVER["⚙️ EXPRESS SERVER\nAuthentication Module"]
+    AUTH{"🔒 Credentials\nValid?"}
+    FAIL["❌ LOGIN FAILED\nInvalid Credentials\nShow Error Message"]
+    SESSION["✅ Login Success\nSave Session to\nsessionStorage"]
+    DASH["📋 ADMIN DASHBOARD\nadmin.html\nControl Panel"]
+    FETCH1["⚙️ Fetch Scan Records\nGET /api/scans"]
+    FETCH2["⚙️ Fetch Report Records\nGET /api/reports"]
+    DB1[("💾 Read\njob_scans[]")]
+    DB2[("💾 Read\nscam_reports[]")]
+    TABLE1["📋 SCANS TABLE\nJob Title | Company | Email\nSalary | Risk Level | Score\n| Date"]
+    TABLE2["📋 REPORTS TABLE\nReporter | Email\nDescription | Status\n| Date"]
+    STATS["📊 STATISTICS\n• Total Scans Count\n• Total Reports Count\n• High Risk Count"]
+    LOGOUT{"👤 Admin\nAction?"}
+    DONE(["🔚 Logout\nSession Cleared"])
+
+    START --> HOME --> CLICK --> LOGIN --> INPUT --> SUBMIT --> SERVER --> AUTH
+    AUTH -- "No — Wrong credentials" --> FAIL --> LOGIN
+    AUTH -- "Yes — Correct" --> SESSION --> DASH
+
+    DASH --> FETCH1 --> DB1 --> TABLE1
+    DASH --> FETCH2 --> DB2 --> TABLE2
+    TABLE1 --> STATS
+    TABLE2 --> STATS
+    STATS --> LOGOUT
+    LOGOUT -- "Logout" --> DONE
+    LOGOUT -- "Refresh Data" --> FETCH1
+
+    style START fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style HOME fill:#4361ee,stroke:#3250d3,color:#fff,stroke-width:2px
+    style CLICK fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style LOGIN fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style INPUT fill:#c084fc,stroke:#a855f7,color:#1a1a2e,stroke-width:2px
+    style SUBMIT fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style SERVER fill:#6c757d,stroke:#545b62,color:#fff,stroke-width:2px
+    style AUTH fill:#ffeaa7,stroke:#fdcb6e,color:#2d3436,stroke-width:2px
+    style FAIL fill:#e74c3c,stroke:#c0392b,color:#fff,stroke-width:2px
+    style SESSION fill:#2ecc71,stroke:#27ae60,color:#fff,stroke-width:2px
+    style DASH fill:#2ecc71,stroke:#27ae60,color:#fff,stroke-width:2px
+    style FETCH1 fill:#6c757d,stroke:#545b62,color:#fff,stroke-width:2px
+    style FETCH2 fill:#6c757d,stroke:#545b62,color:#fff,stroke-width:2px
+    style DB1 fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style DB2 fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style TABLE1 fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style TABLE2 fill:#9b5de5,stroke:#7c3aed,color:#fff,stroke-width:2px
+    style STATS fill:#ff9f43,stroke:#ee5a24,color:#fff,stroke-width:2px
+    style LOGOUT fill:#ffeaa7,stroke:#fdcb6e,color:#2d3436,stroke-width:2px
+    style DONE fill:#4361ee,stroke:#3250d3,color:#fff,stroke-width:2px
+            </div>
+        </div>
+
+        <!-- TAB 5: Layered Architecture -->
+        <div class="diagram-section" id="tab5">
+            <h2>Layered System Architecture</h2>
+            <p class="subtitle">How the project files are organized across architectural layers</p>
+            <div class="mermaid">
+flowchart TD
+    subgraph LAYER1["PRESENTATION LAYER — HTML Pages"]
+        direction LR
+        H1["🏠 index.html\nHome Page"]
+        H2["🔍 scan.html\nScan Form"]
+        H3["📊 result.html\nResults"]
+        H4["📝 report.html\nReport Form"]
+        H5["🔐 admin-login.html\nLogin"]
+        H6["📋 admin.html\nDashboard"]
+        H7["🎨 styles.css\nAll Styling"]
+    end
+
+    subgraph LAYER2["CLIENT LOGIC LAYER — JavaScript"]
+        direction LR
+        J1["scan.js\nForm Handling\n& Validation"]
+        J2["result.js\nRisk Display\n& Visualization"]
+        J3["report.js\nReport\nSubmission"]
+        J4["admin-login.js\nAuthentication\n& Session"]
+        J5["admin.js\nDashboard\nLogic"]
+        J6["cursor.js\nUI Animations"]
+    end
+
+    subgraph LAYER3["SERVER LAYER — Backend"]
+        direction LR
+        S1["⚙️ server.js\nExpress.js\nPort 3000"]
+        S2["/api/scan\nPOST"]
+        S3["/api/report\nPOST"]
+        S4["/api/admin/login\nPOST"]
+        S5["/api/scans\nGET"]
+        S6["/api/reports\nGET"]
+    end
+
+    subgraph LAYER4["DATA LAYER — Storage"]
+        direction LR
+        D1["LowDB v1.0.0\nJSON Database"]
+        D2["scamguard.json\nPersistent Storage"]
+        D3["schema.sql\nSchema Reference"]
+        D4["init.js\nDB Init"]
+    end
+
+    subgraph LAYER5["DEPLOYMENT LAYER — Config"]
+        direction LR
+        C1["package.json\nDependencies"]
+        C2["Dockerfile\nContainer"]
+        C3["render.yaml\nCloud Deploy"]
+        C4["start-ngrok.bat\nPublic URL"]
+    end
+
+    LAYER1 --> LAYER2
+    LAYER2 --> LAYER3
+    LAYER3 --> LAYER4
+    LAYER5 -. "configures" .-> LAYER3
+
+    style LAYER1 fill:#e8f0fe,stroke:#4361ee,stroke-width:3px,color:#1a1a2e
+    style LAYER2 fill:#e6fcf5,stroke:#2ec4b6,stroke-width:3px,color:#1a1a2e
+    style LAYER3 fill:#fff3e0,stroke:#ff9f43,stroke-width:3px,color:#1a1a2e
+    style LAYER4 fill:#f3e8ff,stroke:#9b5de5,stroke-width:3px,color:#1a1a2e
+    style LAYER5 fill:#fce4ec,stroke:#e74c3c,stroke-width:3px,color:#1a1a2e
+    style H1 fill:#4361ee,stroke:#3250d3,color:#fff
+    style H2 fill:#3a86ff,stroke:#2e6ed9,color:#fff
+    style H3 fill:#ff9f43,stroke:#ee5a24,color:#fff
+    style H4 fill:#e74c3c,stroke:#c0392b,color:#fff
+    style H5 fill:#6c757d,stroke:#545b62,color:#fff
+    style H6 fill:#2ecc71,stroke:#27ae60,color:#fff
+    style H7 fill:#3498db,stroke:#2980b9,color:#fff
+    style J1 fill:#2ec4b6,stroke:#1ea898,color:#fff
+    style J2 fill:#38d9a9,stroke:#20c997,color:#1a1a2e
+    style J3 fill:#2ec4b6,stroke:#1ea898,color:#fff
+    style J4 fill:#38d9a9,stroke:#20c997,color:#1a1a2e
+    style J5 fill:#2ec4b6,stroke:#1ea898,color:#fff
+    style J6 fill:#38d9a9,stroke:#20c997,color:#1a1a2e
+    style S1 fill:#ff9f43,stroke:#ee5a24,color:#fff
+    style S2 fill:#ff9f43,stroke:#ee5a24,color:#fff
+    style S3 fill:#ff9f43,stroke:#ee5a24,color:#fff
+    style S4 fill:#ff9f43,stroke:#ee5a24,color:#fff
+    style S5 fill:#ff9f43,stroke:#ee5a24,color:#fff
+    style S6 fill:#ff9f43,stroke:#ee5a24,color:#fff
+    style D1 fill:#9b5de5,stroke:#7c3aed,color:#fff
+    style D2 fill:#c084fc,stroke:#a855f7,color:#1a1a2e
+    style D3 fill:#c084fc,stroke:#a855f7,color:#1a1a2e
+    style D4 fill:#9b5de5,stroke:#7c3aed,color:#fff
+    style C1 fill:#e74c3c,stroke:#c0392b,color:#fff
+    style C2 fill:#e74c3c,stroke:#c0392b,color:#fff
+    style C3 fill:#e74c3c,stroke:#c0392b,color:#fff
+    style C4 fill:#e74c3c,stroke:#c0392b,color:#fff
+            </div>
+        </div>
+
+    </div>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Print All Diagrams</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#4361ee',
+                primaryTextColor: '#fff',
+                lineColor: '#4a4a4a',
+                background: '#ffffff',
+                fontSize: '14px'
+            },
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis',
+                padding: 15,
+                nodeSpacing: 30,
+                rankSpacing: 40
+            }
+        });
+
+        function showTab(tabId) {
+            document.querySelectorAll('.diagram-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

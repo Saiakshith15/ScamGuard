@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Job Scam Detection & Reporting System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">ScamGuard</h1>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="scan.html">Scan Job</a></li>
+                <li><a href="report.html">Report Scam</a></li>
+                <li><a href="admin-login.html" class="active">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="admin-section">
+            <div class="container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div>
+                        <h2 class="page-title" style="margin-bottom: 0;">Admin Dashboard</h2>
+                        <p class="page-subtitle" style="margin-top: 0.5rem;">View database contents</p>
+                    </div>
+                    <button onclick="logout()" class="btn btn-secondary">Logout</button>
+                </div>
+
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="scans">Job Scans</button>
+                    <button class="tab-btn" data-tab="reports">Scam Reports</button>
+                </div>
+
+                <div id="scansTab" class="tab-content active">
+                    <div class="data-header">
+                        <h3>Job Scans (<span id="scansCount">0</span>)</h3>
+                        <button class="btn btn-secondary btn-small" onclick="refreshScans()">Refresh</button>
+                    </div>
+                    <div id="scansContainer" class="data-container">
+                        <p class="loading">Loading scans...</p>
+                    </div>
+                </div>
+
+                <div id="reportsTab" class="tab-content">
+                    <div class="data-header">
+                        <h3>Scam Reports (<span id="reportsCount">0</span>)</h3>
+                        <button class="btn btn-secondary btn-small" onclick="refreshReports()">Refresh</button>
+                    </div>
+                    <div id="reportsContainer" class="data-container">
+                        <p class="loading">Loading reports...</p>
+                    </div>
+                </div>
+
+                <div class="admin-info">
+                    <p><strong>Database File:</strong> <code>database/scamguard.json</code></p>
+                    <p><small>You can also view the database by opening the JSON file directly in a text editor.</small></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Job Scam Detection & Reporting System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="cursor.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

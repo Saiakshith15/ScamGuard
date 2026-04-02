@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Results - Job Scam Detection & Reporting System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">ScamGuard</h1>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="scan.html">Scan Job</a></li>
+                <li><a href="report.html">Report Scam</a></li>
+                <li><a href="admin-login.html">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="result-section">
+            <div class="container">
+                <h2 class="page-title">Scan Results</h2>
+
+                <div id="resultCard" class="result-card">
+                    <div class="result-header">
+                        <h3>Risk Assessment</h3>
+                        <span id="riskBadge" class="risk-badge"></span>
+                    </div>
+                    <div id="riskExplanation" class="risk-explanation"></div>
+                </div>
+
+                <div class="result-actions">
+                    <a href="scan.html" class="btn btn-secondary">Scan Another Job</a>
+                    <a href="report.html" class="btn btn-primary">Report This Scam</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Job Scam Detection & Reporting System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="cursor.js"></script>
+    <script src="result.js"></script>
+</body>
+</html>
